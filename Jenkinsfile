@@ -28,7 +28,7 @@ spec:
         stage('Run maven') {
             steps {
                 container('maven') {
-                    sh './script/build.sh'
+                    sh './scripts/build.sh'
                 }
             }
         }
