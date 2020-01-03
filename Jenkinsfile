@@ -4,11 +4,6 @@ pipeline {
             label 'my-pod-template'
             defaultContainer 'jnlp'
             yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    some-label: some-label-value
 spec:
   containers:
   - name: maven
@@ -16,11 +11,19 @@ spec:
     command:
     - cat
     tty: true
+    volumeMounts:
+      - name: maven-cache
+        mountPath: /root/.m2/repository
   - name: busybox
     image: busybox
     command:
     - cat
     tty: true
+  volumes:
+    - name: maven-cache
+      hostPath:
+        path: /tmp
+        type: Directory
 """
         }
     }
@@ -28,7 +31,7 @@ spec:
         stage('Run maven') {
             steps {
                 container('maven') {
-                    sh './scripts/build.sh'
+                    sh 'mvn -B clean package'
                 }
             }
         }
