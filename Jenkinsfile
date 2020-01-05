@@ -33,6 +33,7 @@ spec:
               container('maven') {
                 sh 'mvn -B clean package'
                 archiveArtifacts 'target/*.jar'
+                junit 'target/surefire-reports/**/TEST*.xml'
               }
           }
         }
