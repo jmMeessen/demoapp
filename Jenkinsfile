@@ -28,12 +28,20 @@ spec:
         }
     }
     stages {
-        stage('Run maven') {
-            steps {
-                container('maven') {
-                    sh 'mvn -B clean package'
-                }
+        stage('Maven build') {
+          steps {
+              container('maven') {
+                sh 'mvn -B clean package'
+                archiveArtifacts 'target/*.jar'
+              }
+          }
+        }
+        stage('Maven verify'){
+          steps {
+            container('maven') {
+              sh 'mvn -B -fail-never -DskipUnitTests=true verify'
             }
+          }
         }
     }
 }
