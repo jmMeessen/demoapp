@@ -29,20 +29,20 @@ spec:
     }
     stages {
         stage('Maven build') {
-          steps {
-              container('maven') {
-                sh 'mvn -B clean package'
-                archiveArtifacts 'target/*.jar'
-                junit 'target/surefire-reports/**/TEST*.xml'
-              }
-          }
+            steps {
+                container('maven') {
+                    sh 'mvn -B clean package'
+                    archiveArtifacts 'target/*.jar'
+                    junit 'target/surefire-reports/**/TEST*.xml'
+                }
+            }
         }
         stage('Maven verify'){
-          steps {
-            container('maven') {
-              sh 'mvn -B -fail-never -DskipUnitTests=true verify'
+            steps {
+                container('maven') {
+                    sh 'mvn -B -fail-never -DskipUnitTests=true verify'
+                }
             }
-          }
         }
     }
 }
